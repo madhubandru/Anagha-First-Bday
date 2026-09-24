@@ -57,7 +57,6 @@
         <div class="relative w-full aspect-9-16 rounded-3xl overflow-hidden shadow-2xl bg-white group">
             
             <!-- Placeholder for 9:16 Image -->
-            <!-- Using Placehold.co for a default image, but users can replace this src -->
             <img src="https://placehold.co/1080x1920/2563eb/ffffff?text=Event+Flyer\n(9:16+Ratio)" 
                  alt="Event Flyer" 
                  class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -102,7 +101,6 @@
                     <span id="main-rsvp-btn-text">RSVP Now</span>
                     <i class="fas fa-arrow-right text-sm"></i>
                 </button>
-
             </div>
         </div>
 
@@ -222,7 +220,6 @@
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, doc, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Your exact Firebase config!
         const firebaseConfig = {
           apiKey: "AIzaSyAILgxMEVJjXgtHpOYzVCdp0-6jl5cgTGw",
           authDomain: "anagha-first-birthday.firebaseapp.com",
@@ -232,7 +229,7 @@
           appId: "1:51930837565:web:5efe4beb1c8d0c8c72f054",
           measurementId: "G-S8C3ZVNS3C"
         };
-
+        
         let db, auth;
         let isFirebaseInitialized = false;
 
@@ -246,9 +243,6 @@
             console.error("Firebase init failed:", error); 
         }
 
-        // Simplified collection name so you can easily find it in your Firestore Database
-        const rsvpCollectionName = 'rsvps'; 
-        
         const modal = document.getElementById('rsvp-modal');
         const modalContent = document.getElementById('modal-content');
         const modalTitle = document.getElementById('modal-title');
@@ -261,42 +255,14 @@
         const alertContainer = document.getElementById('alert-container');
         const mainRsvpBtnText = document.getElementById('main-rsvp-btn-text');
 
-        let currentEditId = null; 
-        let userExistingRsvpId = null; 
+        let currentEditId = null; // Track if editing
+        let userExistingRsvpId = null; // Track if user already RSVP'd
         
         window.handleMainRsvpClick = () => {
             if (userExistingRsvpId) {
                 editRsvp(userExistingRsvpId);
             } else {
                 openRsvpModal();
-            }
-        };
-
-        window.shareApp = () => {
-            const url = window.location.href;
-            
-            const copyToClipboard = (text) => {
-                const textArea = document.createElement("textarea");
-                textArea.value = text;
-                document.body.appendChild(textArea);
-                textArea.select();
-                try {
-                    document.execCommand('copy');
-                    showAlert("Invitation link copied!", "success");
-                } catch (err) {
-                    showAlert("Failed to copy link.", "error");
-                }
-                document.body.removeChild(textArea);
-            };
-
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(url).then(() => {
-                    showAlert("Invitation link copied!", "success");
-                }).catch(() => {
-                    copyToClipboard(url);
-                });
-            } else {
-                copyToClipboard(url);
             }
         };
 
@@ -378,7 +344,6 @@
         async function authenticate() {
             if (!isFirebaseInitialized) return null;
             try {
-                // Anonymous authentication allows guests to edit only their own RSVPs
                 await signInAnonymously(auth);
                 return auth.currentUser;
             } catch (error) {
@@ -387,7 +352,6 @@
             }
         }
 
-        let localRsvps = [];
         let currentRsvpsData = [];
 
         function renderGuestList(rsvps) {
@@ -444,7 +408,7 @@
                     }
                 }
 
-                const isOwner = (rsvp.userId === currentUserUid) || (!isFirebaseInitialized);
+                const isOwner = (rsvp.userId === currentUserUid);
                 const editButtonHtml = isOwner ? 
                     `<button onclick="editRsvp('${rsvp.id}')" class="text-gray-400 hover:text-blue-500 transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 p-1.5 rounded hover:bg-white" title="Edit RSVP">
                         <i class="fas fa-edit"></i>
@@ -484,16 +448,12 @@
             if (isFirebaseInitialized) {
                 const user = await authenticate();
                 if (user) setupRealtimeUpdates();
-                else renderGuestList(localRsvps);
-            } else {
-                setTimeout(() => { renderGuestList(localRsvps); }, 500);
             }
         }
 
         function setupRealtimeUpdates() {
             try {
-                // Pointing directly to your clean 'rsvps' collection
-                const rsvpsRef = collection(db, rsvpCollectionName);
+                const rsvpsRef = collection(db, 'rsvps');
                 onSnapshot(rsvpsRef, (snapshot) => {
                     const rsvps = [];
                     snapshot.forEach((doc) => { rsvps.push({ id: doc.id, ...doc.data() }); });
@@ -544,33 +504,19 @@
             try {
                 if (isFirebaseInitialized && auth.currentUser) {
                     if (currentEditId) {
-                        // Edit existing doc in your 'rsvps' collection
-                        const docRef = doc(db, rsvpCollectionName, currentEditId);
+                        // Edit existing doc
+                        const docRef = doc(db, 'rsvps', currentEditId);
                         await updateDoc(docRef, rsvpData);
                         showAlert("RSVP updated successfully!", "success");
                     } else {
-                        // Add new doc to your 'rsvps' collection
+                        // Add new doc
                         rsvpData.timestamp = serverTimestamp();
                         rsvpData.userId = auth.currentUser.uid;
-                        const rsvpsRef = collection(db, rsvpCollectionName);
+                        const rsvpsRef = collection(db, 'rsvps');
                         await addDoc(rsvpsRef, rsvpData);
                         showAlert("RSVP submitted successfully!", "success");
                     }
-                } else {
-                    // Local fallback
-                    if (currentEditId) {
-                        const index = localRsvps.findIndex(r => r.id === currentEditId);
-                        if (index !== -1) localRsvps[index] = { ...localRsvps[index], ...rsvpData };
-                    } else {
-                        rsvpData.id = Date.now().toString(); 
-                        rsvpData.userId = 'local-user';
-                        rsvpData.timestamp = { toMillis: () => Date.now() }; 
-                        localRsvps.unshift(rsvpData); 
-                    }
-                    renderGuestList(localRsvps);
-                    showAlert("RSVP saved locally!", "success");
-                }
-
+                } 
                 closeRsvpModal();
                 
             } catch (error) {
