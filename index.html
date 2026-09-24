@@ -39,13 +39,31 @@
             background: #94a3b8; 
         }
 
-        /* Modal animation */
+        /* Fade Modal animation */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
         .animate-fade-in {
             animation: fadeIn 0.3s ease-out forwards;
+        }
+
+        /* Book Page Turn Animations */
+        @keyframes turnOutLeft {
+            0% { transform: rotateY(0deg); opacity: 1; }
+            100% { transform: rotateY(-90deg); opacity: 0; }
+        }
+        @keyframes turnInRight {
+            0% { transform: rotateY(90deg); opacity: 0; }
+            100% { transform: rotateY(0deg); opacity: 1; }
+        }
+        @keyframes turnOutRight {
+            0% { transform: rotateY(0deg); opacity: 1; }
+            100% { transform: rotateY(90deg); opacity: 0; }
+        }
+        @keyframes turnInLeft {
+            0% { transform: rotateY(-90deg); opacity: 0; }
+            100% { transform: rotateY(0deg); opacity: 1; }
         }
     </style>
 </head>
@@ -160,8 +178,11 @@
         </button>
         
         <div class="relative w-full h-full max-w-md flex items-center justify-center overflow-hidden" id="gallery-container">
-            <!-- Active Image -->
-            <img id="gallery-image" src="" class="absolute w-full h-full object-contain transition-transform duration-300 px-2 select-none">
+            
+            <!-- Wrapper for 3D Perspective -->
+            <div id="gallery-image-wrapper" class="absolute inset-0 flex items-center justify-center" style="perspective: 1500px;">
+                <!-- Images dynamically injected for flip transition -->
+            </div>
             
             <!-- Navigation Controls -->
             <button onclick="prevImage(event)" class="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/40 text-white flex items-center justify-center hover:bg-black/70 transition-colors z-20 backdrop-blur-sm border border-white/10">
@@ -301,9 +322,9 @@
 
         // Gallery Elements
         const galleryModal = document.getElementById('gallery-modal');
-        const galleryImage = document.getElementById('gallery-image');
         const galleryDots = document.getElementById('gallery-dots');
         const galleryContainer = document.getElementById('gallery-container');
+        const galleryImageWrapper = document.getElementById('gallery-image-wrapper');
 
         // State
         let currentEditId = null; 
@@ -317,6 +338,7 @@
             "https://raw.githubusercontent.com/madhubandru/Anagha-First-Bday/dev/IMG_9212.jpeg"
         ];
         let currentImgIndex = 0;
+        let isAnimating = false;
 
         function renderGalleryDots() {
             galleryDots.innerHTML = galleryImages.map((_, i) => 
@@ -326,10 +348,10 @@
 
         window.openGallery = () => {
             currentImgIndex = 0;
-            updateGalleryImage();
+            updateGalleryImage('none'); // Initial load without flip animation
             galleryModal.classList.remove('hidden');
             setTimeout(() => galleryModal.classList.remove('opacity-0'), 10);
-            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            document.body.style.overflow = 'hidden';
         };
 
         window.closeGallery = () => {
@@ -340,26 +362,70 @@
             }, 300);
         };
 
-        window.updateGalleryImage = () => {
-            galleryImage.src = galleryImages[currentImgIndex];
+        window.updateGalleryImage = (direction = 'next') => {
+            if (isAnimating && direction !== 'none') return;
+            
+            const oldImg = document.getElementById('gallery-image');
+            
+            const newImg = document.createElement('img');
+            newImg.src = galleryImages[currentImgIndex];
+            newImg.className = 'absolute w-full h-full object-contain px-2 select-none pointer-events-none';
+            newImg.id = 'gallery-image-new';
+
+            if (oldImg && direction !== 'none') {
+                isAnimating = true;
+                
+                if (direction === 'next') {
+                    // Turn page to the left (like a Western book)
+                    oldImg.style.transformOrigin = 'left center';
+                    newImg.style.transformOrigin = 'right center';
+                    oldImg.style.animation = 'turnOutLeft 0.5s ease-in forwards';
+                    newImg.style.animation = 'turnInRight 0.5s ease-out forwards';
+                } else {
+                    // Turn page to the right (going backward)
+                    oldImg.style.transformOrigin = 'right center';
+                    newImg.style.transformOrigin = 'left center';
+                    oldImg.style.animation = 'turnOutRight 0.5s ease-in forwards';
+                    newImg.style.animation = 'turnInLeft 0.5s ease-out forwards';
+                }
+                
+                galleryImageWrapper.appendChild(newImg);
+                
+                setTimeout(() => {
+                    if(oldImg.parentNode) oldImg.parentNode.removeChild(oldImg);
+                    newImg.id = 'gallery-image';
+                    newImg.style.animation = '';
+                    isAnimating = false;
+                }, 500);
+            } else {
+                // First time opening, just show the image instantly
+                galleryImageWrapper.innerHTML = '';
+                newImg.id = 'gallery-image';
+                galleryImageWrapper.appendChild(newImg);
+            }
+            
             renderGalleryDots();
         };
 
         window.prevImage = (e) => {
             if(e) e.stopPropagation();
+            if(isAnimating) return;
             currentImgIndex = (currentImgIndex - 1 + galleryImages.length) % galleryImages.length;
-            updateGalleryImage();
+            updateGalleryImage('prev');
         };
 
         window.nextImage = (e) => {
             if(e) e.stopPropagation();
+            if(isAnimating) return;
             currentImgIndex = (currentImgIndex + 1) % galleryImages.length;
-            updateGalleryImage();
+            updateGalleryImage('next');
         };
         
         window.goToImage = (index) => {
+            if(index === currentImgIndex || isAnimating) return;
+            const direction = index > currentImgIndex ? 'next' : 'prev';
             currentImgIndex = index;
-            updateGalleryImage();
+            updateGalleryImage(direction);
         };
 
         // Swipe Support for Gallery
@@ -376,6 +442,7 @@
         }, {passive: true});
 
         function handleSwipe() {
+            if(isAnimating) return;
             const swipeThreshold = 50;
             if (touchEndX < touchStartX - swipeThreshold) nextImage();
             if (touchEndX > touchStartX + swipeThreshold) prevImage();
