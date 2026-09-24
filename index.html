@@ -103,10 +103,6 @@
                     <i class="fas fa-arrow-right text-sm"></i>
                 </button>
 
-                <button onclick="shareApp()" class="w-full mt-3 bg-white/10 backdrop-blur-md text-white font-medium py-3 rounded-xl border border-white/20 hover:bg-white/20 transition flex items-center justify-center gap-2">
-                    <i class="fas fa-share-nodes"></i>
-                    <span>Share Invitation</span>
-                </button>
             </div>
         </div>
 
@@ -223,12 +219,10 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, doc, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        const appId = typeof __app_id !== 'anagha-first-birthday' ? __app_id : 'event-rsvp-demo';
-        const firebaseConfigStr = typeof __firebase_config !== 'anagha-first-birthday' ? __firebase_config : null;
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        // Your exact Firebase config!
         const firebaseConfig = {
           apiKey: "AIzaSyAILgxMEVJjXgtHpOYzVCdp0-6jl5cgTGw",
           authDomain: "anagha-first-birthday.firebaseapp.com",
@@ -238,25 +232,22 @@
           appId: "1:51930837565:web:5efe4beb1c8d0c8c72f054",
           measurementId: "G-S8C3ZVNS3C"
         };
-        
-        try {
-            if (firebaseConfigStr) firebaseConfig = JSON.parse(firebaseConfigStr);
-        } catch (e) { console.error("Error parsing firebase config", e); }
 
         let db, auth;
         let isFirebaseInitialized = false;
 
-        if (firebaseConfig) {
-            try {
-                const app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                auth = getAuth(app);
-                isFirebaseInitialized = true;
-                console.log("Firebase initialized.");
-            } catch (error) { console.error("Firebase init failed:", error); }
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+            isFirebaseInitialized = true;
+            console.log("Firebase initialized.");
+        } catch (error) { 
+            console.error("Firebase init failed:", error); 
         }
 
-        const rsvpCollectionName = 'rsvps';
+        // Simplified collection name so you can easily find it in your Firestore Database
+        const rsvpCollectionName = 'rsvps'; 
         
         const modal = document.getElementById('rsvp-modal');
         const modalContent = document.getElementById('modal-content');
@@ -270,8 +261,8 @@
         const alertContainer = document.getElementById('alert-container');
         const mainRsvpBtnText = document.getElementById('main-rsvp-btn-text');
 
-        let currentEditId = null; // Track if editing
-        let userExistingRsvpId = null; // Track if user already RSVP'd
+        let currentEditId = null; 
+        let userExistingRsvpId = null; 
         
         window.handleMainRsvpClick = () => {
             if (userExistingRsvpId) {
@@ -387,11 +378,8 @@
         async function authenticate() {
             if (!isFirebaseInitialized) return null;
             try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
+                // Anonymous authentication allows guests to edit only their own RSVPs
+                await signInAnonymously(auth);
                 return auth.currentUser;
             } catch (error) {
                 console.error("Auth error:", error);
@@ -456,7 +444,6 @@
                     }
                 }
 
-                // Show edit button if the RSVP belongs to the current user (or if running in local mode)
                 const isOwner = (rsvp.userId === currentUserUid) || (!isFirebaseInitialized);
                 const editButtonHtml = isOwner ? 
                     `<button onclick="editRsvp('${rsvp.id}')" class="text-gray-400 hover:text-blue-500 transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 p-1.5 rounded hover:bg-white" title="Edit RSVP">
@@ -505,7 +492,8 @@
 
         function setupRealtimeUpdates() {
             try {
-                const rsvpsRef = collection(db, 'artifacts', appId, 'public', 'data', rsvpCollectionName);
+                // Pointing directly to your clean 'rsvps' collection
+                const rsvpsRef = collection(db, rsvpCollectionName);
                 onSnapshot(rsvpsRef, (snapshot) => {
                     const rsvps = [];
                     snapshot.forEach((doc) => { rsvps.push({ id: doc.id, ...doc.data() }); });
@@ -556,15 +544,15 @@
             try {
                 if (isFirebaseInitialized && auth.currentUser) {
                     if (currentEditId) {
-                        // Edit existing doc
-                        const docRef = doc(db, 'artifacts', appId, 'public', 'data', rsvpCollectionName, currentEditId);
+                        // Edit existing doc in your 'rsvps' collection
+                        const docRef = doc(db, rsvpCollectionName, currentEditId);
                         await updateDoc(docRef, rsvpData);
                         showAlert("RSVP updated successfully!", "success");
                     } else {
-                        // Add new doc
+                        // Add new doc to your 'rsvps' collection
                         rsvpData.timestamp = serverTimestamp();
                         rsvpData.userId = auth.currentUser.uid;
-                        const rsvpsRef = collection(db, 'artifacts', appId, 'public', 'data', rsvpCollectionName);
+                        const rsvpsRef = collection(db, rsvpCollectionName);
                         await addDoc(rsvpsRef, rsvpData);
                         showAlert("RSVP submitted successfully!", "success");
                     }
