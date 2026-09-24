@@ -70,29 +70,42 @@
                         You're Invited
                     </span>
                     <h1 class="text-4xl font-serif font-bold leading-tight mb-2 text-white shadow-sm">
-                        Summer Solstice<br>Gala
+                        అనఘ సైనిక's<br>1st Birthday
                     </h1>
-                    <p class="text-gray-200 text-sm font-light">Join us for an evening of celebration under the stars.</p>
+                    <p class="text-gray-200 text-sm font-light">Join us in celebrating this special milestone.</p>
                 </div>
 
                 <div class="space-y-3 mb-8">
+                    <!-- Date & Time -->
                     <div class="flex items-center gap-3 bg-black/20 backdrop-blur-sm p-3 rounded-xl border border-white/10">
                         <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
                             <i class="fas fa-calendar-day text-blue-300"></i>
                         </div>
                         <div>
                             <p class="text-xs text-gray-300 uppercase tracking-wider font-semibold">Date & Time</p>
-                            <p class="text-sm font-medium">Saturday, July 15th, 7:00 PM</p>
+                            <p class="text-sm font-medium">Sunday, Sep 27th, 1:00 PM</p>
                         </div>
                     </div>
                     
+                    <!-- Venue -->
+                    <div class="flex items-center gap-3 bg-black/20 backdrop-blur-sm p-3 rounded-xl border border-white/10">
+                        <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-building text-purple-300"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-300 uppercase tracking-wider font-semibold">Venue</p>
+                            <p class="text-sm font-medium">Ascend Durbin Park</p>
+                        </div>
+                    </div>
+
+                    <!-- Location -->
                     <div class="flex items-center gap-3 bg-black/20 backdrop-blur-sm p-3 rounded-xl border border-white/10">
                         <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
                             <i class="fas fa-map-marker-alt text-red-300"></i>
                         </div>
                         <div>
                             <p class="text-xs text-gray-300 uppercase tracking-wider font-semibold">Location</p>
-                            <p class="text-sm font-medium">The Grand Atrium, Downtown</p>
+                            <p class="text-sm font-medium">160 Bowling Grn Wy, St Johns, FL 32259</p>
                         </div>
                     </div>
                 </div>
@@ -255,8 +268,8 @@
         const alertContainer = document.getElementById('alert-container');
         const mainRsvpBtnText = document.getElementById('main-rsvp-btn-text');
 
-        let currentEditId = null; // Track if editing
-        let userExistingRsvpId = null; // Track if user already RSVP'd
+        let currentEditId = null; 
+        let userExistingRsvpId = null; 
         
         window.handleMainRsvpClick = () => {
             if (userExistingRsvpId) {
