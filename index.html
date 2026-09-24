@@ -36,6 +36,16 @@
             border-radius: 4px;
         }
 
+        /* Hide spinner buttons for number inputs across browsers */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
         /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-10px); }
@@ -234,13 +244,31 @@
                 </div>
 
                 <div class="grid grid-cols-2 gap-6">
+                    <!-- Adults Counter -->
                     <div>
-                        <label for="adult-count" class="block text-xs uppercase tracking-wider font-semibold text-gray-500 mb-2">Adults</label>
-                        <input type="number" id="adult-count" min="0" value="1" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#C19A6B] outline-none transition-colors bg-[#F9F8F6] text-[#2C3E50] font-medium">
+                        <label class="block text-xs uppercase tracking-wider font-semibold text-gray-500 mb-2">Adults</label>
+                        <div class="flex items-center border border-gray-200 rounded-xl bg-[#F9F8F6] overflow-hidden">
+                            <button type="button" onclick="adjustCount('adult-count', -1)" class="w-10 h-11 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">
+                                <i class="fas fa-minus text-xs"></i>
+                            </button>
+                            <input type="number" id="adult-count" min="0" value="1" class="w-full text-center py-2.5 bg-transparent outline-none text-[#2C3E50] font-semibold text-base">
+                            <button type="button" onclick="adjustCount('adult-count', 1)" class="w-10 h-11 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">
+                                <i class="fas fa-plus text-xs"></i>
+                            </button>
+                        </div>
                     </div>
+                    <!-- Kids Counter -->
                     <div>
-                        <label for="kid-count" class="block text-xs uppercase tracking-wider font-semibold text-gray-500 mb-2">Kids</label>
-                        <input type="number" id="kid-count" min="0" value="0" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#C19A6B] outline-none transition-colors bg-[#F9F8F6] text-[#2C3E50] font-medium">
+                        <label class="block text-xs uppercase tracking-wider font-semibold text-gray-500 mb-2">Kids</label>
+                        <div class="flex items-center border border-gray-200 rounded-xl bg-[#F9F8F6] overflow-hidden">
+                            <button type="button" onclick="adjustCount('kid-count', -1)" class="w-10 h-11 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">
+                                <i class="fas fa-minus text-xs"></i>
+                            </button>
+                            <input type="number" id="kid-count" min="0" value="0" class="w-full text-center py-2.5 bg-transparent outline-none text-[#2C3E50] font-semibold text-base">
+                            <button type="button" onclick="adjustCount('kid-count', 1)" class="w-10 h-11 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">
+                                <i class="fas fa-plus text-xs"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -399,6 +427,19 @@
             updateGalleryImage(direction);
         };
 
+        // Stepper Helper for Counters
+        window.adjustCount = (elementId, delta) => {
+            const input = document.getElementById(elementId);
+            let currentVal = parseInt(input.value) || 0;
+            let newVal = currentVal + delta;
+            if (elementId === 'adult-count') {
+                if (newVal < 1) newVal = 1; // Minimum 1 adult
+            } else {
+                if (newVal < 0) newVal = 0; // Minimum 0 kids
+            }
+            input.value = newVal;
+        };
+
         let touchStartX = 0;
         let touchEndX = 0;
         
@@ -460,7 +501,7 @@
             const statusRadio = document.querySelector(`input[name="attendance"][value="${rsvp.status}"]`);
             if(statusRadio) statusRadio.checked = true;
             
-            document.getElementById('adult-count').value = rsvp.adults || 0;
+            document.getElementById('adult-count').value = rsvp.adults || 1;
             document.getElementById('kid-count').value = rsvp.kids || 0;
             document.getElementById('guest-message').value = rsvp.message || '';
 
@@ -628,7 +669,7 @@
                 name: nameInput,
                 status: statusInput.value,
                 message: messageInput,
-                adults: parseInt(adultsInput, 10) || 0,
+                adults: parseInt(adultsInput, 10) || 1,
                 kids: parseInt(kidsInput, 10) || 0
             };
 
