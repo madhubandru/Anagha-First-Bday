@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Invitation & RSVP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* 9:16 Aspect Ratio Container */
+        .aspect-9-16 {
+            aspect-ratio: 9 / 16;
+        }
+
+        /* Custom Scrollbar for guest list */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+
+        /* Modal animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-100 flex justify-center py-8 px-4">
+
+    <main class="w-full max-w-md mx-auto flex flex-col gap-6">
+        
+        <!-- Invitation Card (9:16 ratio area) -->
+        <div class="relative w-full aspect-9-16 rounded-3xl overflow-hidden shadow-2xl bg-white group">
+            
+            <!-- Placeholder for 9:16 Image -->
+            <!-- Using Placehold.co for a default image, but users can replace this src -->
+            <img src="https://placehold.co/1080x1920/2563eb/ffffff?text=Event+Flyer\n(9:16+Ratio)" 
+                 alt="Event Flyer" 
+                 class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                 id="event-image">
+            
+            <!-- Overlay for text readability -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-8 text-white z-10">
+                
+                <div class="mb-4">
+                    <span class="inline-block px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-semibold tracking-wider uppercase mb-3 border border-white/30">
+                        You're Invited
+                    </span>
+                    <h1 class="text-4xl font-serif font-bold leading-tight mb-2 text-white shadow-sm">
+                        Summer Solstice<br>Gala
+                    </h1>
+                    <p class="text-gray-200 text-sm font-light">Join us for an evening of celebration under the stars.</p>
+                </div>
+
+                <div class="space-y-3 mb-8">
+                    <div class="flex items-center gap-3 bg-black/20 backdrop-blur-sm p-3 rounded-xl border border-white/10">
+                        <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-calendar-day text-blue-300"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-300 uppercase tracking-wider font-semibold">Date & Time</p>
+                            <p class="text-sm font-medium">Saturday, July 15th, 7:00 PM</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-3 bg-black/20 backdrop-blur-sm p-3 rounded-xl border border-white/10">
+                        <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-map-marker-alt text-red-300"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-300 uppercase tracking-wider font-semibold">Location</p>
+                            <p class="text-sm font-medium">The Grand Atrium, Downtown</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="main-rsvp-btn" onclick="handleMainRsvpClick()" class="w-full bg-white text-gray-900 font-bold py-4 rounded-xl shadow-lg hover:bg-gray-100 transform transition hover:-translate-y-1 active:translate-y-0 flex items-center justify-center gap-2">
+                    <span id="main-rsvp-btn-text">RSVP Now</span>
+                    <i class="fas fa-arrow-right text-sm"></i>
+                </button>
+
+                <button onclick="shareApp()" class="w-full mt-3 bg-white/10 backdrop-blur-md text-white font-medium py-3 rounded-xl border border-white/20 hover:bg-white/20 transition flex items-center justify-center gap-2">
+                    <i class="fas fa-share-nodes"></i>
+                    <span>Share Invitation</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Guest List Section -->
+        <div class="bg-white rounded-3xl shadow-md p-6 border border-gray-100">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold text-gray-800 font-serif">Guest List</h2>
+                <div class="flex items-center gap-2 text-sm text-gray-500 bg-gray-50 px-3 py-1 rounded-full">
+                    <i class="fas fa-users text-blue-500"></i>
+                    <span id="guest-count">0</span> Attending
+                </div>
+            </div>
+            
+            <!-- Loading state for guest list -->
+            <div id="loading-guests" class="flex justify-center py-8">
+                <i class="fas fa-spinner fa-spin text-2xl text-blue-500"></i>
+            </div>
+
+            <!-- List container -->
+            <ul id="guest-list" class="space-y-3 max-h-60 overflow-y-auto custom-scrollbar pr-2 hidden">
+                <!-- Guest items will be injected here via JS -->
+            </ul>
+
+            <!-- Empty state -->
+            <div id="empty-state" class="text-center py-8 hidden">
+                <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <i class="fas fa-ticket-alt text-gray-300 text-2xl"></i>
+                </div>
+                <p class="text-gray-500 text-sm">No RSVPs yet. Be the first!</p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- RSVP Modal (Hidden by default) -->
+    <div id="rsvp-modal" class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 opacity-0 transition-opacity duration-300">
+        
+        <!-- Modal Content -->
+        <div class="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl shadow-2xl transform translate-y-full sm:translate-y-0 transition-transform duration-300" id="modal-content">
+            
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center p-6 border-b border-gray-100">
+                <h3 class="text-2xl font-serif font-bold text-gray-800" id="modal-title">Your RSVP</h3>
+                <button onclick="closeRsvpModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-500 transition-colors">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body (Form) -->
+            <form id="rsvp-form" class="p-6 space-y-5">
+                
+                <!-- Name Input -->
+                <div>
+                    <label for="guest-name" class="block text-sm font-semibold text-gray-700 mb-1">Full Name <span class="text-red-500">*</span></label>
+                    <input type="text" id="guest-name" required placeholder="e.g., Jane Doe" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-gray-50 focus:bg-white">
+                </div>
+
+                <!-- Attendance Selection -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Will you be attending? <span class="text-red-500">*</span></label>
+                    <div class="grid grid-cols-3 gap-3">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="attendance" value="attending" class="peer sr-only" required>
+                            <div class="text-center p-3 rounded-xl border border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700 hover:bg-gray-50 transition-all">
+                                <i class="fas fa-check-circle mb-1 block text-lg"></i>
+                                <span class="text-xs font-semibold uppercase tracking-wide">Yes</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="attendance" value="maybe" class="peer sr-only">
+                            <div class="text-center p-3 rounded-xl border border-gray-200 peer-checked:border-amber-500 peer-checked:bg-amber-50 peer-checked:text-amber-700 hover:bg-gray-50 transition-all">
+                                <i class="fas fa-question-circle mb-1 block text-lg"></i>
+                                <span class="text-xs font-semibold uppercase tracking-wide">Maybe</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="attendance" value="not_attending" class="peer sr-only">
+                            <div class="text-center p-3 rounded-xl border border-gray-200 peer-checked:border-red-500 peer-checked:bg-red-50 peer-checked:text-red-700 hover:bg-gray-50 transition-all">
+                                <i class="fas fa-times-circle mb-1 block text-lg"></i>
+                                <span class="text-xs font-semibold uppercase tracking-wide">No</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Guest Count -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="adult-count" class="block text-sm font-semibold text-gray-700 mb-1">Adults</label>
+                        <input type="number" id="adult-count" min="0" value="1" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-gray-50 focus:bg-white">
+                    </div>
+                    <div>
+                        <label for="kid-count" class="block text-sm font-semibold text-gray-700 mb-1">Kids</label>
+                        <input type="number" id="kid-count" min="0" value="0" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-gray-50 focus:bg-white">
+                    </div>
+                </div>
+
+                <!-- Message (Optional) -->
+                <div>
+                    <label for="guest-message" class="block text-sm font-semibold text-gray-700 mb-1">Message (Optional)</label>
+                    <textarea id="guest-message" rows="2" placeholder="Dietary requirements or a note for the host..." class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-gray-50 focus:bg-white resize-none"></textarea>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" id="submit-btn" class="w-full bg-blue-600 text-white font-bold py-3.5 rounded-xl shadow-md hover:bg-blue-700 hover:shadow-lg transform transition active:translate-y-0.5">
+                    Submit RSVP
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Custom Alert Container -->
+    <div id="alert-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2"></div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, doc, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'event-rsvp-demo';
+        const firebaseConfigStr = typeof __firebase_config !== 'undefined' ? __firebase_config : null;
+        let firebaseConfig = null;
+        
+        try {
+            if (firebaseConfigStr) firebaseConfig = JSON.parse(firebaseConfigStr);
+        } catch (e) { console.error("Error parsing firebase config", e); }
+
+        let db, auth;
+        let isFirebaseInitialized = false;
+
+        if (firebaseConfig) {
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                isFirebaseInitialized = true;
+                console.log("Firebase initialized.");
+            } catch (error) { console.error("Firebase init failed:", error); }
+        }
+
+        const rsvpCollectionName = 'rsvps';
+        
+        const modal = document.getElementById('rsvp-modal');
+        const modalContent = document.getElementById('modal-content');
+        const modalTitle = document.getElementById('modal-title');
+        const form = document.getElementById('rsvp-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const guestListEl = document.getElementById('guest-list');
+        const guestCountEl = document.getElementById('guest-count');
+        const loadingEl = document.getElementById('loading-guests');
+        const emptyStateEl = document.getElementById('empty-state');
+        const alertContainer = document.getElementById('alert-container');
+        const mainRsvpBtnText = document.getElementById('main-rsvp-btn-text');
+
+        let currentEditId = null; // Track if editing
+        let userExistingRsvpId = null; // Track if user already RSVP'd
+        
+        window.handleMainRsvpClick = () => {
+            if (userExistingRsvpId) {
+                editRsvp(userExistingRsvpId);
+            } else {
+                openRsvpModal();
+            }
+        };
+
+        window.shareApp = () => {
+            const url = window.location.href;
+            
+            const copyToClipboard = (text) => {
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showAlert("Invitation link copied!", "success");
+                } catch (err) {
+                    showAlert("Failed to copy link.", "error");
+                }
+                document.body.removeChild(textArea);
+            };
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(() => {
+                    showAlert("Invitation link copied!", "success");
+                }).catch(() => {
+                    copyToClipboard(url);
+                });
+            } else {
+                copyToClipboard(url);
+            }
+        };
+
+        window.openRsvpModal = () => {
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('translate-y-full', 'sm:translate-y-10', 'opacity-0');
+            }, 10);
+            document.body.style.overflow = 'hidden'; 
+        };
+
+        window.closeRsvpModal = () => {
+            modal.classList.add('opacity-0');
+            modalContent.classList.add('translate-y-full', 'sm:translate-y-10', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.style.overflow = ''; 
+                resetForm();
+            }, 300); 
+        };
+
+        function resetForm() {
+            form.reset();
+            currentEditId = null;
+            modalTitle.textContent = "Your RSVP";
+            submitBtn.textContent = "Submit RSVP";
+            document.getElementById('adult-count').value = "1";
+            document.getElementById('kid-count').value = "0";
+        }
+
+        window.editRsvp = (id) => {
+            const rsvp = currentRsvpsData.find(r => r.id === id);
+            if (!rsvp) return;
+
+            currentEditId = id;
+            modalTitle.textContent = "Edit RSVP";
+            submitBtn.textContent = "Update RSVP";
+
+            document.getElementById('guest-name').value = rsvp.name;
+            const statusRadio = document.querySelector(`input[name="attendance"][value="${rsvp.status}"]`);
+            if(statusRadio) statusRadio.checked = true;
+            
+            document.getElementById('adult-count').value = rsvp.adults || 0;
+            document.getElementById('kid-count').value = rsvp.kids || 0;
+            document.getElementById('guest-message').value = rsvp.message || '';
+
+            openRsvpModal();
+        };
+
+        function showAlert(message, type = 'success') {
+            const alertEl = document.createElement('div');
+            const bgColors = {
+                success: 'bg-emerald-50 text-emerald-800 border-emerald-200',
+                error: 'bg-red-50 text-red-800 border-red-200'
+            };
+            const icons = {
+                success: '<i class="fas fa-check-circle text-emerald-500"></i>',
+                error: '<i class="fas fa-exclamation-circle text-red-500"></i>'
+            };
+
+            alertEl.className = `flex items-center gap-3 px-4 py-3 rounded-lg border shadow-sm transform transition-all duration-300 translate-x-full opacity-0 ${bgColors[type]}`;
+            alertEl.innerHTML = `${icons[type]}<p class="text-sm font-medium">${message}</p>`;
+            alertContainer.appendChild(alertEl);
+
+            requestAnimationFrame(() => alertEl.classList.remove('translate-x-full', 'opacity-0'));
+
+            setTimeout(() => {
+                alertEl.classList.add('translate-x-full', 'opacity-0');
+                setTimeout(() => alertEl.remove(), 300);
+            }, 3000);
+        }
+
+        function escapeHTML(str) {
+            if (!str) return '';
+            return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
+        }
+
+        async function authenticate() {
+            if (!isFirebaseInitialized) return null;
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+                return auth.currentUser;
+            } catch (error) {
+                console.error("Auth error:", error);
+                return null;
+            }
+        }
+
+        let localRsvps = [];
+        let currentRsvpsData = [];
+
+        function renderGuestList(rsvps) {
+            loadingEl.classList.add('hidden');
+            currentRsvpsData = rsvps; 
+            userExistingRsvpId = null;
+            
+            if (rsvps.length === 0) {
+                guestListEl.classList.add('hidden');
+                emptyStateEl.classList.remove('hidden');
+                guestCountEl.textContent = '0';
+                if (mainRsvpBtnText) mainRsvpBtnText.textContent = "RSVP Now";
+                return;
+            }
+
+            guestListEl.innerHTML = '';
+            let attendingCount = 0;
+            const currentUserUid = (auth && auth.currentUser) ? auth.currentUser.uid : 'local-user';
+
+            rsvps.forEach(rsvp => {
+                if (rsvp.userId === currentUserUid) {
+                    userExistingRsvpId = rsvp.id;
+                }
+
+                if (rsvp.status === 'attending') {
+                    const adults = parseInt(rsvp.adults) || 0;
+                    const kids = parseInt(rsvp.kids) || 0;
+                    attendingCount += (adults + kids) > 0 ? (adults + kids) : 1;
+                }
+
+                const li = document.createElement('li');
+                li.className = 'flex items-start gap-3 p-3 bg-gray-50 rounded-xl animate-fade-in border border-gray-100 group';
+                
+                let statusConfig = { bg: 'bg-gray-100', text: 'text-gray-500' };
+                if (rsvp.status === 'attending') {
+                    statusConfig = { bg: 'bg-emerald-100', text: 'text-emerald-600' };
+                } else if (rsvp.status === 'maybe') {
+                    statusConfig = { bg: 'bg-amber-100', text: 'text-amber-600' };
+                } else {
+                    statusConfig = { bg: 'bg-red-100', text: 'text-red-500' };
+                }
+
+                const initial = rsvp.name ? rsvp.name.charAt(0).toUpperCase() : '?';
+
+                let partyDetails = '';
+                if (rsvp.status !== 'not_attending') {
+                    const adults = parseInt(rsvp.adults) || 0;
+                    const kids = parseInt(rsvp.kids) || 0;
+                    if (adults > 0 || kids > 0) {
+                         partyDetails = `<div class="text-[11px] font-medium text-gray-500 mt-1 flex gap-3">
+                             ${adults > 0 ? `<span class="flex items-center gap-1"><i class="fas fa-user text-gray-400"></i> ${adults} Adult${adults > 1 ? 's' : ''}</span>` : ''}
+                             ${kids > 0 ? `<span class="flex items-center gap-1"><i class="fas fa-child text-gray-400"></i> ${kids} Kid${kids > 1 ? 's' : ''}</span>` : ''}
+                         </div>`;
+                    }
+                }
+
+                // Show edit button if the RSVP belongs to the current user (or if running in local mode)
+                const isOwner = (rsvp.userId === currentUserUid) || (!isFirebaseInitialized);
+                const editButtonHtml = isOwner ? 
+                    `<button onclick="editRsvp('${rsvp.id}')" class="text-gray-400 hover:text-blue-500 transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 p-1.5 rounded hover:bg-white" title="Edit RSVP">
+                        <i class="fas fa-edit"></i>
+                    </button>` : '';
+
+                li.innerHTML = `
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm shrink-0 ${statusConfig.bg} ${statusConfig.text}">
+                        ${initial}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex justify-between items-start mb-0.5">
+                            <div class="flex items-center gap-2">
+                                <h4 class="font-semibold text-gray-800 text-sm truncate pr-2">${escapeHTML(rsvp.name)}</h4>
+                                <span class="text-[10px] uppercase tracking-wider font-bold ${statusConfig.text} bg-white px-2 py-0.5 rounded-md border border-gray-100 shadow-sm">
+                                    ${rsvp.status === 'not_attending' ? 'No' : rsvp.status}
+                                </span>
+                            </div>
+                            ${editButtonHtml}
+                        </div>
+                        ${partyDetails}
+                        ${rsvp.message ? `<p class="text-xs text-gray-600 mt-1.5 italic break-words bg-white p-2 rounded-lg border border-gray-100 shadow-sm">"${escapeHTML(rsvp.message)}"</p>` : ''}
+                    </div>
+                `;
+                guestListEl.appendChild(li);
+            });
+
+            if (mainRsvpBtnText) {
+                mainRsvpBtnText.textContent = userExistingRsvpId ? "Edit Your RSVP" : "RSVP Now";
+            }
+
+            guestCountEl.textContent = attendingCount;
+            guestListEl.classList.remove('hidden');
+            emptyStateEl.classList.add('hidden');
+        }
+
+        async function initApp() {
+            if (isFirebaseInitialized) {
+                const user = await authenticate();
+                if (user) setupRealtimeUpdates();
+                else renderGuestList(localRsvps);
+            } else {
+                setTimeout(() => { renderGuestList(localRsvps); }, 500);
+            }
+        }
+
+        function setupRealtimeUpdates() {
+            try {
+                const rsvpsRef = collection(db, 'artifacts', appId, 'public', 'data', rsvpCollectionName);
+                onSnapshot(rsvpsRef, (snapshot) => {
+                    const rsvps = [];
+                    snapshot.forEach((doc) => { rsvps.push({ id: doc.id, ...doc.data() }); });
+                    
+                    rsvps.sort((a, b) => {
+                        const timeA = a.timestamp ? a.timestamp.toMillis() : 0;
+                        const timeB = b.timestamp ? b.timestamp.toMillis() : 0;
+                        return timeB - timeA;
+                    });
+                    
+                    renderGuestList(rsvps);
+                }, (error) => {
+                    console.error("Error fetching RSVPs:", error);
+                    loadingEl.classList.add('hidden');
+                });
+            } catch (error) {
+                 console.error("Error setting up snapshot:", error);
+                 loadingEl.classList.add('hidden');
+            }
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const nameInput = document.getElementById('guest-name').value.trim();
+            const statusInput = document.querySelector('input[name="attendance"]:checked');
+            const messageInput = document.getElementById('guest-message').value.trim();
+            const adultsInput = document.getElementById('adult-count').value;
+            const kidsInput = document.getElementById('kid-count').value;
+
+            if (!nameInput || !statusInput) {
+                showAlert("Please fill out required fields.", "error");
+                return;
+            }
+
+            const rsvpData = {
+                name: nameInput,
+                status: statusInput.value,
+                message: messageInput,
+                adults: parseInt(adultsInput, 10) || 0,
+                kids: parseInt(kidsInput, 10) || 0
+            };
+
+            const originalBtnContent = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            submitBtn.disabled = true;
+
+            try {
+                if (isFirebaseInitialized && auth.currentUser) {
+                    if (currentEditId) {
+                        // Edit existing doc
+                        const docRef = doc(db, 'artifacts', appId, 'public', 'data', rsvpCollectionName, currentEditId);
+                        await updateDoc(docRef, rsvpData);
+                        showAlert("RSVP updated successfully!", "success");
+                    } else {
+                        // Add new doc
+                        rsvpData.timestamp = serverTimestamp();
+                        rsvpData.userId = auth.currentUser.uid;
+                        const rsvpsRef = collection(db, 'artifacts', appId, 'public', 'data', rsvpCollectionName);
+                        await addDoc(rsvpsRef, rsvpData);
+                        showAlert("RSVP submitted successfully!", "success");
+                    }
+                } else {
+                    // Local fallback
+                    if (currentEditId) {
+                        const index = localRsvps.findIndex(r => r.id === currentEditId);
+                        if (index !== -1) localRsvps[index] = { ...localRsvps[index], ...rsvpData };
+                    } else {
+                        rsvpData.id = Date.now().toString(); 
+                        rsvpData.userId = 'local-user';
+                        rsvpData.timestamp = { toMillis: () => Date.now() }; 
+                        localRsvps.unshift(rsvpData); 
+                    }
+                    renderGuestList(localRsvps);
+                    showAlert("RSVP saved locally!", "success");
+                }
+
+                closeRsvpModal();
+                
+            } catch (error) {
+                console.error("Error saving RSVP:", error);
+                showAlert("Failed to save RSVP. Please try again.", "error");
+            } finally {
+                submitBtn.innerHTML = originalBtnContent;
+                submitBtn.disabled = false;
+            }
+        });
+
+        initApp();
+    </script>
+</body>
+</html>
