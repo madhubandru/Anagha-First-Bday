@@ -3,40 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anagha Sainika Turning 1</title>
+    <title>Anagha Sainika's 1st Birthday Invitation</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap');
         
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #F9F8F6; /* Warm elegant off-white */
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #F7F5F0; /* Soft warm parchment */
+            color: #262626;
         }
 
         .font-serif {
             font-family: 'Playfair Display', serif;
         }
 
-        /* 9:16 Aspect Ratio Container */
-        .aspect-9-16 {
-            aspect-ratio: 9 / 16;
+        .font-luxury {
+            font-family: 'Cinzel', serif;
         }
 
         /* Custom Scrollbar */
         .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
+            width: 4px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f1f1; 
-            border-radius: 4px;
+            background: transparent; 
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #d1d5db; 
+            background: #D4AF37; 
             border-radius: 4px;
         }
 
-        /* Hide spinner buttons for number inputs across browsers */
+        /* Hide spinner buttons for number inputs */
         input[type=number]::-webkit-inner-spin-button, 
         input[type=number]::-webkit-outer-spin-button { 
             -webkit-appearance: none; 
@@ -46,239 +45,179 @@
             -moz-appearance: textfield;
         }
 
-        /* Animations */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
         .animate-fade-in {
-            animation: fadeIn 0.4s ease-out forwards;
-        }
-
-        @keyframes softPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-        }
-        .pulse-subtle {
-            animation: softPulse 3s ease-in-out infinite;
-        }
-
-        /* Book Page Turn Animations */
-        @keyframes turnOutLeft {
-            0% { transform: rotateY(0deg); opacity: 1; }
-            100% { transform: rotateY(-90deg); opacity: 0; }
-        }
-        @keyframes turnInRight {
-            0% { transform: rotateY(90deg); opacity: 0; }
-            100% { transform: rotateY(0deg); opacity: 1; }
-        }
-        @keyframes turnOutRight {
-            0% { transform: rotateY(0deg); opacity: 1; }
-            100% { transform: rotateY(90deg); opacity: 0; }
-        }
-        @keyframes turnInLeft {
-            0% { transform: rotateY(-90deg); opacity: 0; }
-            100% { transform: rotateY(0deg); opacity: 1; }
+            animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
     </style>
 </head>
-<body class="min-h-screen flex justify-center py-8 px-4 sm:px-6">
+<body class="min-h-screen flex justify-center items-center py-12 px-4 sm:px-6">
 
-    <main class="w-full max-w-md mx-auto flex flex-col gap-10">
+    <main class="w-full max-w-md mx-auto flex flex-col gap-8">
         
-        <!-- Elegant Invitation Card -->
-        <div class="w-full bg-white rounded-[2rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] overflow-hidden">
+        <!-- Elite Stationery Invitation Card -->
+        <div class="w-full bg-white rounded-3xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.06)] border border-[#EBE6DC] overflow-hidden p-8 sm:p-12 flex flex-col items-center text-center relative">
             
-            <!-- Unobstructed Image Area (9:16) -->
-            <div class="relative w-full aspect-9-16 bg-gray-100">
-                <img src="https://raw.githubusercontent.com/madhubandru/Anagha-First-Bday/dev/IMG_8643.jpeg" 
-                     alt="Anagha" 
-                     class="absolute inset-0 w-full h-full object-cover"
-                     id="event-image">
-            </div>
-            
-            <!-- Noticeable "Chapters of Joy" Gallery Banner -->
-            <div class="px-8 pt-8 pb-4 bg-gradient-to-b from-white to-[#FDFBF7]">
-                <div onclick="openGallery()" class="pulse-subtle cursor-pointer group relative bg-white border-2 border-[#C19A6B]/40 hover:border-[#C19A6B] rounded-2xl p-4 shadow-[0_8px_25px_-5px_rgba(193,154,107,0.15)] transition-all duration-300 flex items-center justify-between">
-                    <div class="flex items-center gap-4">
-                        <!-- Preview Circles -->
-                        <div class="flex -space-x-3 overflow-hidden">
-                            <img class="inline-block h-10 w-10 rounded-full object-cover ring-2 ring-white" src="https://raw.githubusercontent.com/madhubandru/Anagha-First-Bday/dev/IMG_8643.jpeg" alt="">
-                            <img class="inline-block h-10 w-10 rounded-full object-cover ring-2 ring-white" src="https://raw.githubusercontent.com/madhubandru/Anagha-First-Bday/dev/IMG_8988.jpeg" alt="">
-                            <img class="inline-block h-10 w-10 rounded-full object-cover ring-2 ring-white" src="https://raw.githubusercontent.com/madhubandru/Anagha-First-Bday/dev/IMG_9212.jpeg" alt="">
-                        </div>
-                        <div>
-                            <span class="text-[9px] uppercase tracking-[0.25em] text-[#C19A6B] font-bold block mb-0.5">Photo Story</span>
-                            <h3 class="font-serif text-lg text-[#2C3E50] group-hover:text-[#C19A6B] transition-colors">Chapters of Joy</h3>
-                        </div>
-                    </div>
-                    <div class="w-10 h-10 rounded-full bg-[#F9F8F6] group-hover:bg-[#C19A6B] text-[#C19A6B] group-hover:text-white transition-all flex items-center justify-center shrink-0">
-                        <i class="fas fa-book-open text-sm"></i>
-                    </div>
-                </div>
-            </div>
+            <!-- Double Border Frame for Elite Stationery Look -->
+            <div class="absolute inset-4 border border-[#D4AF37]/30 pointer-events-none rounded-2xl"></div>
+            <div class="absolute inset-5 border border-[#D4AF37]/15 pointer-events-none rounded-2xl"></div>
 
-            <!-- Details Area -->
-            <div class="bg-white px-8 pt-6 pb-10 z-20 flex flex-col items-center text-center">
+            <!-- Content Area -->
+            <div class="relative z-10 py-6 w-full flex flex-col items-center">
                 
-                <!-- Title Section -->
-                <span class="text-[10px] uppercase tracking-[0.3em] text-gray-400 mb-3 font-semibold">Join us to celebrate</span>
-                <h1 class="text-4xl font-serif text-[#2C3E50] leading-tight mb-1">అనఘ సైనిక's</h1>
-                <p class="font-serif text-2xl text-[#C19A6B] italic mb-8">First Birthday</p>
+                <!-- Monogram Crest -->
+                <div class="w-12 h-12 rounded-full border border-[#D4AF37]/60 flex items-center justify-center mb-6 bg-[#FDFBF7]">
+                    <span class="font-luxury text-xs tracking-widest text-[#B38F58]">A • S</span>
+                </div>
+
+                <span class="font-luxury text-[9px] uppercase tracking-[0.4em] text-[#8C7A6B] mb-4 font-semibold">You Are Cordially Invited</span>
                 
-                <!-- Elegant Divider -->
-                <div class="w-12 h-[1px] bg-[#E5E0D8] mb-8"></div>
+                <h1 class="text-4xl sm:text-5xl font-serif text-[#1A1A1A] leading-tight mb-1">Anagha Sainika's</h1>
+                <p class="font-serif text-2xl text-[#B38F58] italic font-normal mb-6">First Birthday</p>
                 
-                <!-- Event Info Grid -->
-                <div class="flex flex-col gap-7 w-full mb-10">
+                <!-- Ornamental Divider -->
+                <div class="flex items-center gap-3 w-32 my-4">
+                    <div class="h-[1px] bg-gradient-to-r from-transparent to-[#D4AF37] flex-1"></div>
+                    <div class="w-1.5 h-1.5 rotate-45 bg-[#D4AF37]"></div>
+                    <div class="h-[1px] bg-gradient-to-l from-transparent to-[#D4AF37] flex-1"></div>
+                </div>
+                
+                <p class="text-gray-500 text-xs font-light tracking-wide max-w-xs leading-relaxed mb-8 px-2">
+                    Please join us for a joyful afternoon filled with love, wonderful company, and celebration as our beloved daughter turns one.
+                </p>
+
+                <!-- Event Details Box -->
+                <div class="flex flex-col gap-5 w-full mb-8 bg-[#FAF8F5] p-6 rounded-2xl border border-[#EBE6DC]">
                     <div>
-                        <h3 class="text-[10px] uppercase tracking-[0.25em] text-[#C19A6B] font-bold mb-2">When</h3>
-                        <p class="text-[#2C3E50] text-base font-medium">Sunday, September 27th</p>
-                        <p class="text-gray-500 text-sm mt-0.5">1:00 PM</p>
+                        <span class="font-luxury text-[9px] uppercase tracking-[0.3em] text-[#B38F58] font-bold block mb-1">Date & Time</span>
+                        <p class="text-[#1A1A1A] text-sm font-medium">Sunday, September 27th</p>
+                        <p class="text-gray-500 text-xs mt-0.5">1:00 PM</p>
                     </div>
+                    <div class="w-full h-[1px] bg-[#EBE6DC]"></div>
                     <div>
-                        <h3 class="text-[10px] uppercase tracking-[0.25em] text-[#C19A6B] font-bold mb-2">Where</h3>
-                        <p class="text-[#2C3E50] text-base font-medium">Ascend Durbin Park</p>
-                        <p class="text-gray-500 text-sm mt-0.5">160 Bowling Grn Wy<br>St Johns, FL 32259</p>
+                        <span class="font-luxury text-[9px] uppercase tracking-[0.3em] text-[#B38F58] font-bold block mb-1">Location</span>
+                        <p class="text-[#1A1A1A] text-sm font-medium">Ascend Durbin Park</p>
+                        <p class="text-gray-500 text-xs mt-0.5 leading-relaxed">160 Bowling Grn Wy<br>St Johns, FL 32259</p>
                     </div>
                 </div>
                 
-                <!-- RSVP Button -->
-                <button id="main-rsvp-btn" onclick="handleMainRsvpClick()" class="w-full bg-[#2C3E50] text-white tracking-[0.15em] uppercase text-xs font-bold py-4 rounded-xl shadow-lg hover:bg-[#1a252f] transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex justify-center items-center gap-3">
+                <!-- RSVP Trigger Button -->
+                <button id="main-rsvp-btn" onclick="handleMainRsvpClick()" class="w-full bg-[#1A1A1A] text-white font-luxury tracking-[0.2em] uppercase text-[11px] font-semibold py-4 rounded-xl shadow-md hover:bg-[#333333] transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex justify-center items-center gap-3">
                     <span id="main-rsvp-btn-text">RSVP Now</span>
-                    <i class="fas fa-chevron-right text-[10px]"></i>
+                    <i class="fas fa-arrow-right text-[9px] text-[#D4AF37]"></i>
                 </button>
             </div>
         </div>
 
         <!-- Guest List Section -->
-        <div class="bg-white rounded-[2rem] shadow-[0_10px_40px_-15px_rgba(0,0,0,0.05)] p-8 border border-[#F0EBE1]">
-            <div class="flex flex-col items-center text-center mb-8">
-                <h2 class="text-2xl font-serif text-[#2C3E50] mb-2">Guest List</h2>
-                <div class="flex items-center gap-2 text-xs text-[#C19A6B] uppercase tracking-widest font-semibold">
+        <div class="bg-white rounded-3xl shadow-[0_10px_40px_-15px_rgba(0,0,0,0.04)] p-8 border border-[#EBE6DC]">
+            <div class="flex flex-col items-center text-center mb-6">
+                <h2 class="font-serif text-2xl text-[#1A1A1A] mb-1">Guests</h2>
+                <div class="flex items-center gap-2 font-luxury text-[10px] text-[#B38F58] uppercase tracking-widest font-semibold">
                     <span id="guest-count">0</span> Attending
                 </div>
             </div>
             
             <div id="loading-guests" class="flex justify-center py-8">
-                <i class="fas fa-circle-notch fa-spin text-2xl text-[#C19A6B]"></i>
+                <i class="fas fa-circle-notch fa-spin text-xl text-[#B38F58]"></i>
             </div>
 
-            <ul id="guest-list" class="space-y-4 max-h-72 overflow-y-auto custom-scrollbar pr-3 hidden">
+            <ul id="guest-list" class="space-y-4 max-h-72 overflow-y-auto custom-scrollbar pr-2 hidden">
                 <!-- Guest items injected here -->
             </ul>
 
             <div id="empty-state" class="text-center py-6 hidden flex flex-col items-center">
-                <div class="w-12 h-12 rounded-full bg-[#F9F8F6] flex items-center justify-center mb-3 text-[#E5E0D8]">
-                    <i class="fas fa-envelope-open text-lg"></i>
+                <div class="w-10 h-10 rounded-full bg-[#FAF8F5] flex items-center justify-center mb-3 text-[#D4AF37]/60">
+                    <i class="fas fa-feather-alt text-sm"></i>
                 </div>
-                <p class="text-gray-400 text-sm font-light italic">Awaiting responses...</p>
+                <p class="text-gray-400 text-xs font-light italic">Awaiting initial responses...</p>
             </div>
         </div>
 
     </main>
 
-    <!-- Photo Gallery Modal -->
-    <div id="gallery-modal" class="fixed inset-0 bg-black/95 z-[60] hidden flex-col items-center justify-center opacity-0 transition-opacity duration-300 backdrop-blur-sm">
-        <button onclick="closeGallery()" class="absolute top-4 right-4 text-white/70 hover:text-white p-3 z-50 transition-colors">
-            <i class="fas fa-times text-2xl"></i>
-        </button>
-        
-        <div class="relative w-full h-full max-w-md flex items-center justify-center overflow-hidden" id="gallery-container">
-            <div id="gallery-image-wrapper" class="absolute inset-0 flex items-center justify-center" style="perspective: 1500px;">
-                <!-- Images dynamically injected -->
-            </div>
-            
-            <button onclick="prevImage(event)" class="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white/20 transition-colors z-20 backdrop-blur-md border border-white/20">
-                <i class="fas fa-chevron-left text-lg"></i>
-            </button>
-            <button onclick="nextImage(event)" class="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white/20 transition-colors z-20 backdrop-blur-md border border-white/20">
-                <i class="fas fa-chevron-right text-lg"></i>
-            </button>
-        </div>
-        
-        <div class="absolute bottom-8 flex gap-3 z-20" id="gallery-dots"></div>
-    </div>
-
     <!-- RSVP Modal -->
-    <div id="rsvp-modal" class="fixed inset-0 bg-[#2C3E50]/80 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 opacity-0 transition-opacity duration-400">
+    <div id="rsvp-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 opacity-0 transition-opacity duration-300">
         
-        <div class="bg-white w-full sm:max-w-md rounded-t-[2rem] sm:rounded-[2rem] shadow-2xl transform translate-y-full sm:translate-y-0 transition-transform duration-400" id="modal-content">
+        <div class="bg-white w-full sm:max-w-md rounded-t-[2.5rem] sm:rounded-[2.5rem] shadow-2xl transform translate-y-full sm:translate-y-0 transition-transform duration-300 border border-[#EBE6DC]" id="modal-content">
             
-            <div class="flex justify-between items-center px-8 pt-8 pb-6 border-b border-[#F0EBE1]">
-                <h3 class="text-2xl font-serif text-[#2C3E50]" id="modal-title">Your RSVP</h3>
-                <button onclick="closeRsvpModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-[#F9F8F6] text-gray-400 transition-colors">
-                    <i class="fas fa-times"></i>
+            <div class="flex justify-between items-center px-8 pt-8 pb-6 border-b border-[#EBE6DC]">
+                <h3 class="font-serif text-2xl text-[#1A1A1A]" id="modal-title">Reservation</h3>
+                <button onclick="closeRsvpModal()" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-[#FAF8F5] text-gray-400 transition-colors">
+                    <i class="fas fa-times text-sm"></i>
                 </button>
             </div>
 
             <form id="rsvp-form" class="p-8 space-y-6">
                 
                 <div>
-                    <label for="guest-name" class="block text-xs uppercase tracking-wider font-semibold text-gray-500 mb-2">Full Name <span class="text-[#C19A6B]">*</span></label>
-                    <input type="text" id="guest-name" required placeholder="Jane Doe" class="w-full px-0 py-2 border-b-2 border-gray-200 focus:border-[#C19A6B] focus:ring-0 outline-none transition-colors bg-transparent text-[#2C3E50] placeholder-gray-300 font-medium text-lg">
+                    <label for="guest-name" class="font-luxury block text-[10px] uppercase tracking-[0.2em] text-[#8C7A6B] font-semibold mb-2">Guest Full Name <span class="text-[#B38F58]">*</span></label>
+                    <input type="text" id="guest-name" required placeholder="Lord/Lady Name" class="w-full px-0 py-2.5 border-b border-gray-300 focus:border-[#B38F58] focus:ring-0 outline-none transition-colors bg-transparent text-[#1A1A1A] placeholder-gray-300 font-medium text-base">
                 </div>
 
                 <div>
-                    <label class="block text-xs uppercase tracking-wider font-semibold text-gray-500 mb-3">Attending? <span class="text-[#C19A6B]">*</span></label>
+                    <label class="font-luxury block text-[10px] uppercase tracking-[0.2em] text-[#8C7A6B] font-semibold mb-3">Attendance Status <span class="text-[#B38F58]">*</span></label>
                     <div class="grid grid-cols-3 gap-3">
                         <label class="cursor-pointer group">
                             <input type="radio" name="attendance" value="attending" class="peer sr-only" required>
-                            <div class="text-center py-3 rounded-xl border border-gray-200 peer-checked:border-[#2C3E50] peer-checked:bg-[#2C3E50] peer-checked:text-white text-gray-500 transition-all">
-                                <span class="text-xs font-semibold uppercase tracking-wider">Yes</span>
+                            <div class="text-center py-3 rounded-xl border border-gray-200 peer-checked:border-[#1A1A1A] peer-checked:bg-[#1A1A1A] peer-checked:text-white text-gray-600 transition-all">
+                                <span class="font-luxury text-[10px] font-semibold tracking-wider uppercase">Accepts</span>
                             </div>
                         </label>
                         <label class="cursor-pointer group">
                             <input type="radio" name="attendance" value="maybe" class="peer sr-only">
-                            <div class="text-center py-3 rounded-xl border border-gray-200 peer-checked:border-[#C19A6B] peer-checked:bg-[#C19A6B] peer-checked:text-white text-gray-500 transition-all">
-                                <span class="text-xs font-semibold uppercase tracking-wider">Maybe</span>
+                            <div class="text-center py-3 rounded-xl border border-gray-200 peer-checked:border-[#B38F58] peer-checked:bg-[#B38F58] peer-checked:text-white text-gray-600 transition-all">
+                                <span class="font-luxury text-[10px] font-semibold tracking-wider uppercase">Tentative</span>
                             </div>
                         </label>
                         <label class="cursor-pointer group">
                             <input type="radio" name="attendance" value="not_attending" class="peer sr-only">
-                            <div class="text-center py-3 rounded-xl border border-gray-200 peer-checked:border-gray-300 peer-checked:bg-gray-100 peer-checked:text-gray-600 text-gray-500 transition-all">
-                                <span class="text-xs font-semibold uppercase tracking-wider">No</span>
+                            <div class="text-center py-3 rounded-xl border border-gray-200 peer-checked:border-gray-400 peer-checked:bg-gray-100 peer-checked:text-gray-700 text-gray-600 transition-all">
+                                <span class="font-luxury text-[10px] font-semibold tracking-wider uppercase">Declines</span>
                             </div>
                         </label>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-6">
+                <div class="grid grid-cols-2 gap-5">
                     <!-- Adults Counter -->
                     <div>
-                        <label class="block text-xs uppercase tracking-wider font-semibold text-gray-500 mb-2">Adults</label>
-                        <div class="flex items-center border border-gray-200 rounded-xl bg-[#F9F8F6] overflow-hidden">
+                        <label class="font-luxury block text-[10px] uppercase tracking-[0.2em] text-[#8C7A6B] font-semibold mb-2">Adult Guests</label>
+                        <div class="flex items-center border border-gray-200 rounded-xl bg-[#FAF8F5] overflow-hidden">
                             <button type="button" onclick="adjustCount('adult-count', -1)" class="w-10 h-11 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">
-                                <i class="fas fa-minus text-xs"></i>
+                                <i class="fas fa-minus text-[10px]"></i>
                             </button>
-                            <input type="number" id="adult-count" min="0" value="1" class="w-full text-center py-2.5 bg-transparent outline-none text-[#2C3E50] font-semibold text-base">
+                            <input type="number" id="adult-count" min="0" value="1" class="w-full text-center py-2.5 bg-transparent outline-none text-[#1A1A1A] font-semibold text-sm">
                             <button type="button" onclick="adjustCount('adult-count', 1)" class="w-10 h-11 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">
-                                <i class="fas fa-plus text-xs"></i>
+                                <i class="fas fa-plus text-[10px]"></i>
                             </button>
                         </div>
                     </div>
                     <!-- Kids Counter -->
                     <div>
-                        <label class="block text-xs uppercase tracking-wider font-semibold text-gray-500 mb-2">Kids</label>
-                        <div class="flex items-center border border-gray-200 rounded-xl bg-[#F9F8F6] overflow-hidden">
+                        <label class="font-luxury block text-[10px] uppercase tracking-[0.2em] text-[#8C7A6B] font-semibold mb-2">Child Guests</label>
+                        <div class="flex items-center border border-gray-200 rounded-xl bg-[#FAF8F5] overflow-hidden">
                             <button type="button" onclick="adjustCount('kid-count', -1)" class="w-10 h-11 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">
-                                <i class="fas fa-minus text-xs"></i>
+                                <i class="fas fa-minus text-[10px]"></i>
                             </button>
-                            <input type="number" id="kid-count" min="0" value="0" class="w-full text-center py-2.5 bg-transparent outline-none text-[#2C3E50] font-semibold text-base">
+                            <input type="number" id="kid-count" min="0" value="0" class="w-full text-center py-2.5 bg-transparent outline-none text-[#1A1A1A] font-semibold text-sm">
                             <button type="button" onclick="adjustCount('kid-count', 1)" class="w-10 h-11 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">
-                                <i class="fas fa-plus text-xs"></i>
+                                <i class="fas fa-plus text-[10px]"></i>
                             </button>
                         </div>
                     </div>
                 </div>
 
                 <div>
-                    <label for="guest-message" class="block text-xs uppercase tracking-wider font-semibold text-gray-500 mb-2">Message (Optional)</label>
-                    <textarea id="guest-message" rows="2" placeholder="Leave a note..." class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#C19A6B] outline-none transition-colors bg-[#F9F8F6] text-[#2C3E50] resize-none text-sm"></textarea>
+                    <label for="guest-message" class="font-luxury block text-[10px] uppercase tracking-[0.2em] text-[#8C7A6B] font-semibold mb-2">Note to Host (Optional)</label>
+                    <textarea id="guest-message" rows="2" placeholder="Dietary notes or warm wishes..." class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#B38F58] outline-none transition-colors bg-[#FAF8F5] text-[#1A1A1A] resize-none text-xs"></textarea>
                 </div>
 
-                <button type="submit" id="submit-btn" class="w-full bg-[#2C3E50] text-white tracking-[0.15em] uppercase text-xs font-bold py-4 rounded-xl shadow-md hover:bg-[#1a252f] transition-transform active:translate-y-0.5 mt-2">
-                    Submit RSVP
+                <button type="submit" id="submit-btn" class="w-full bg-[#1A1A1A] text-white font-luxury tracking-[0.2em] uppercase text-[11px] font-semibold py-4 rounded-xl shadow-md hover:bg-[#333333] transition-transform active:translate-y-0.5 mt-2">
+                    Confirm Reservation
                 </button>
             </form>
         </div>
@@ -313,7 +252,6 @@
             console.error("Firebase init failed:", error); 
         }
 
-        // DOM Elements
         const modal = document.getElementById('rsvp-modal');
         const modalContent = document.getElementById('modal-content');
         const modalTitle = document.getElementById('modal-title');
@@ -326,131 +264,21 @@
         const alertContainer = document.getElementById('alert-container');
         const mainRsvpBtnText = document.getElementById('main-rsvp-btn-text');
 
-        // Gallery Elements
-        const galleryModal = document.getElementById('gallery-modal');
-        const galleryDots = document.getElementById('gallery-dots');
-        const galleryContainer = document.getElementById('gallery-container');
-        const galleryImageWrapper = document.getElementById('gallery-image-wrapper');
-
-        // State
         let currentEditId = null; 
         let userExistingRsvpId = null; 
         let currentRsvpsData = [];
-        
-        // Gallery State & Logic
-        const galleryImages = [
-            "https://raw.githubusercontent.com/madhubandru/Anagha-First-Bday/dev/IMG_8643.jpeg",
-            "https://raw.githubusercontent.com/madhubandru/Anagha-First-Bday/dev/IMG_8988.jpeg",
-            "https://raw.githubusercontent.com/madhubandru/Anagha-First-Bday/dev/IMG_9212.jpeg"
-        ];
-        let currentImgIndex = 0;
-        let isAnimating = false;
 
-        function renderGalleryDots() {
-            galleryDots.innerHTML = galleryImages.map((_, i) => 
-                `<button onclick="goToImage(${i})" class="w-2 h-2 rounded-full transition-all duration-300 ${i === currentImgIndex ? 'bg-white scale-125' : 'bg-white/40 hover:bg-white/70'}"></button>`
-            ).join('');
-        }
-
-        window.openGallery = () => {
-            currentImgIndex = 0;
-            updateGalleryImage('none'); 
-            galleryModal.classList.remove('hidden');
-            setTimeout(() => galleryModal.classList.remove('opacity-0'), 10);
-            document.body.style.overflow = 'hidden';
-        };
-
-        window.closeGallery = () => {
-            galleryModal.classList.add('opacity-0');
-            setTimeout(() => {
-                galleryModal.classList.add('hidden');
-                document.body.style.overflow = '';
-            }, 300);
-        };
-
-        window.updateGalleryImage = (direction = 'next') => {
-            if (isAnimating && direction !== 'none') return;
-            
-            const oldImg = document.getElementById('gallery-image');
-            const newImg = document.createElement('img');
-            newImg.src = galleryImages[currentImgIndex];
-            newImg.className = 'absolute w-full h-full object-contain px-2 select-none pointer-events-none';
-            newImg.id = 'gallery-image-new';
-
-            if (oldImg && direction !== 'none') {
-                isAnimating = true;
-                if (direction === 'next') {
-                    oldImg.style.transformOrigin = 'left center';
-                    newImg.style.transformOrigin = 'right center';
-                    oldImg.style.animation = 'turnOutLeft 0.5s ease-in forwards';
-                    newImg.style.animation = 'turnInRight 0.5s ease-out forwards';
-                } else {
-                    oldImg.style.transformOrigin = 'right center';
-                    newImg.style.transformOrigin = 'left center';
-                    oldImg.style.animation = 'turnOutRight 0.5s ease-in forwards';
-                    newImg.style.animation = 'turnInLeft 0.5s ease-out forwards';
-                }
-                
-                galleryImageWrapper.appendChild(newImg);
-                setTimeout(() => {
-                    if(oldImg.parentNode) oldImg.parentNode.removeChild(oldImg);
-                    newImg.id = 'gallery-image';
-                    newImg.style.animation = '';
-                    isAnimating = false;
-                }, 500);
-            } else {
-                galleryImageWrapper.innerHTML = '';
-                newImg.id = 'gallery-image';
-                galleryImageWrapper.appendChild(newImg);
-            }
-            renderGalleryDots();
-        };
-
-        window.prevImage = (e) => {
-            if(e) e.stopPropagation();
-            if(isAnimating) return;
-            currentImgIndex = (currentImgIndex - 1 + galleryImages.length) % galleryImages.length;
-            updateGalleryImage('prev');
-        };
-
-        window.nextImage = (e) => {
-            if(e) e.stopPropagation();
-            if(isAnimating) return;
-            currentImgIndex = (currentImgIndex + 1) % galleryImages.length;
-            updateGalleryImage('next');
-        };
-        
-        window.goToImage = (index) => {
-            if(index === currentImgIndex || isAnimating) return;
-            const direction = index > currentImgIndex ? 'next' : 'prev';
-            currentImgIndex = index;
-            updateGalleryImage(direction);
-        };
-
-        // Stepper Helper for Counters
         window.adjustCount = (elementId, delta) => {
             const input = document.getElementById(elementId);
             let currentVal = parseInt(input.value) || 0;
             let newVal = currentVal + delta;
             if (elementId === 'adult-count') {
-                if (newVal < 1) newVal = 1; // Minimum 1 adult
+                if (newVal < 1) newVal = 1;
             } else {
-                if (newVal < 0) newVal = 0; // Minimum 0 kids
+                if (newVal < 0) newVal = 0;
             }
             input.value = newVal;
         };
-
-        let touchStartX = 0;
-        let touchEndX = 0;
-        
-        galleryContainer.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, {passive: true});
-        galleryContainer.addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].screenX;
-            if(isAnimating) return;
-            const swipeThreshold = 50;
-            if (touchEndX < touchStartX - swipeThreshold) nextImage();
-            if (touchEndX > touchStartX + swipeThreshold) prevImage();
-        }, {passive: true});
 
         window.handleMainRsvpClick = () => {
             if (userExistingRsvpId) editRsvp(userExistingRsvpId);
@@ -473,14 +301,14 @@
                 modal.classList.add('hidden');
                 document.body.style.overflow = ''; 
                 resetForm();
-            }, 400); 
+            }, 300); 
         };
 
         function resetForm() {
             form.reset();
             currentEditId = null;
-            modalTitle.textContent = "Your RSVP";
-            submitBtn.textContent = "Submit RSVP";
+            modalTitle.textContent = "Reservation";
+            submitBtn.textContent = "Confirm Reservation";
             document.getElementById('adult-count').value = "1";
             document.getElementById('kid-count').value = "0";
             
@@ -494,8 +322,8 @@
             if (!rsvp) return;
 
             currentEditId = id;
-            modalTitle.textContent = "Edit RSVP";
-            submitBtn.textContent = "Update RSVP";
+            modalTitle.textContent = "Modify Reservation";
+            submitBtn.textContent = "Update Reservation";
 
             document.getElementById('guest-name').value = rsvp.name;
             const statusRadio = document.querySelector(`input[name="attendance"][value="${rsvp.status}"]`);
@@ -510,15 +338,8 @@
 
         function showAlert(message, type = 'success') {
             const alertEl = document.createElement('div');
-            const style = type === 'success' 
-                ? 'bg-[#F9F8F6] text-[#2C3E50] border-l-4 border-[#C19A6B]' 
-                : 'bg-[#F9F8F6] text-[#2C3E50] border-l-4 border-red-400';
-            const icon = type === 'success' 
-                ? '<i class="fas fa-check text-[#C19A6B]"></i>' 
-                : '<i class="fas fa-exclamation text-red-400"></i>';
-
-            alertEl.className = `flex items-center gap-4 px-5 py-4 rounded shadow-lg transform transition-all duration-300 translate-x-full opacity-0 ${style}`;
-            alertEl.innerHTML = `${icon}<p class="text-sm font-medium tracking-wide">${message}</p>`;
+            alertEl.className = `flex items-center gap-3 px-5 py-4 rounded-xl shadow-lg border border-[#EBE6DC] bg-white text-[#1A1A1A] transform transition-all duration-300 translate-x-full opacity-0`;
+            alertEl.innerHTML = `<i class="fas fa-check-circle text-[#B38F58]"></i><p class="text-xs font-medium tracking-wide">${message}</p>`;
             alertContainer.appendChild(alertEl);
 
             requestAnimationFrame(() => alertEl.classList.remove('translate-x-full', 'opacity-0'));
@@ -572,11 +393,11 @@
                 }
 
                 const li = document.createElement('li');
-                li.className = 'flex items-start gap-4 py-3 border-b border-[#F0EBE1] last:border-0 group animate-fade-in';
+                li.className = 'flex items-start gap-4 py-3 border-b border-[#EBE6DC] last:border-0 group animate-fade-in';
                 
-                let dotColor = 'bg-gray-200';
-                if (rsvp.status === 'attending') dotColor = 'bg-[#2C3E50]';
-                else if (rsvp.status === 'maybe') dotColor = 'bg-[#C19A6B]';
+                let dotColor = 'bg-gray-300';
+                if (rsvp.status === 'attending') dotColor = 'bg-[#1A1A1A]';
+                else if (rsvp.status === 'maybe') dotColor = 'bg-[#B38F58]';
 
                 let partyDetails = '';
                 if (rsvp.status !== 'not_attending') {
@@ -584,35 +405,35 @@
                     const kids = parseInt(rsvp.kids) || 0;
                     if (adults > 0 || kids > 0) {
                          partyDetails = `<span class="text-[10px] text-gray-400 mt-0.5 block tracking-wide">
-                             ${adults} Adult${adults !== 1 ? 's' : ''}${kids > 0 ? ` • ${kids} Kid${kids !== 1 ? 's' : ''}` : ''}
+                             ${adults} Adult${adults !== 1 ? 's' : ''}${kids > 0 ? ` • ${kids} Child${kids !== 1 ? 'ren' : ''}` : ''}
                          </span>`;
                     }
                 }
 
                 const isOwner = (rsvp.userId === currentUserUid);
                 const editButtonHtml = isOwner ? 
-                    `<button onclick="editRsvp('${rsvp.id}')" class="text-gray-300 hover:text-[#C19A6B] transition-colors p-1" title="Edit RSVP">
-                        <i class="fas fa-pen text-[10px]"></i>
+                    `<button onclick="editRsvp('${rsvp.id}')" class="text-gray-300 hover:text-[#B38F58] transition-colors p-1" title="Modify">
+                        <i class="fas fa-pen text-[9px]"></i>
                     </button>` : '';
 
                 li.innerHTML = `
-                    <div class="mt-1.5 w-2 h-2 rounded-full ${dotColor} shrink-0"></div>
+                    <div class="mt-1.5 w-1.5 h-1.5 rounded-full ${dotColor} shrink-0"></div>
                     <div class="flex-1 min-w-0">
                         <div class="flex justify-between items-start">
                             <div>
-                                <h4 class="font-serif text-[#2C3E50] text-sm truncate pr-2 ${rsvp.status === 'not_attending' ? 'line-through text-gray-400' : ''}">${escapeHTML(rsvp.name)}</h4>
+                                <h4 class="font-serif text-[#1A1A1A] text-sm truncate pr-2 ${rsvp.status === 'not_attending' ? 'line-through text-gray-400' : ''}">${escapeHTML(rsvp.name)}</h4>
                                 ${partyDetails}
                             </div>
                             ${editButtonHtml}
                         </div>
-                        ${rsvp.message ? `<p class="text-[11px] text-gray-500 mt-1 italic break-words border-l-2 border-[#E5E0D8] pl-2">"${escapeHTML(rsvp.message)}"</p>` : ''}
+                        ${rsvp.message ? `<p class="text-[11px] text-gray-500 mt-1 italic break-words border-l border-[#D4AF37]/50 pl-2">"${escapeHTML(rsvp.message)}"</p>` : ''}
                     </div>
                 `;
                 guestListEl.appendChild(li);
             });
 
             if (mainRsvpBtnText) {
-                mainRsvpBtnText.textContent = userExistingRsvpId ? "Update RSVP" : "RSVP Now";
+                mainRsvpBtnText.textContent = userExistingRsvpId ? "Modify Reservation" : "RSVP Now";
             }
 
             guestCountEl.textContent = attendingCount;
@@ -661,7 +482,7 @@
             const kidsInput = document.getElementById('kid-count').value;
 
             if (!nameInput || !statusInput) {
-                showAlert("Please fill out required fields.", "error");
+                showAlert("Please complete required fields.", "error");
                 return;
             }
 
@@ -682,20 +503,20 @@
                     if (currentEditId) {
                         const docRef = doc(db, 'rsvps', currentEditId);
                         await updateDoc(docRef, rsvpData);
-                        showAlert("RSVP updated beautifully.", "success");
+                        showAlert("Reservation successfully updated.", "success");
                     } else {
                         rsvpData.timestamp = serverTimestamp();
                         rsvpData.userId = auth.currentUser.uid;
                         const rsvpsRef = collection(db, 'rsvps');
                         await addDoc(rsvpsRef, rsvpData);
-                        showAlert("Thank you! RSVP submitted.", "success");
+                        showAlert("Reservation successfully recorded.", "success");
                     }
                 } 
                 closeRsvpModal();
                 
             } catch (error) {
                 console.error("Error saving RSVP:", error);
-                showAlert("Failed to save RSVP. Please try again.", "error");
+                showAlert("Failed to save reservation. Please retry.", "error");
             } finally {
                 submitBtn.innerHTML = originalBtnContent;
                 submitBtn.disabled = false;
